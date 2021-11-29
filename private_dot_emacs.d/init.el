@@ -71,6 +71,7 @@
 		eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+(use-package undo-fu)
 (use-package command-log-mode)
 
 (use-package ligature
@@ -193,6 +194,7 @@
   (setq evil-want-C-i-jump nil)
   :config
   (evil-mode 1)
+  (setq evil-undo-system 'undo-fu)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   ;; (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
@@ -215,6 +217,10 @@
 (use-package evil-nerd-commenter
   :config
   (evilnc-default-hotkeys))
+
+(use-package evil-multiedit
+  :config
+  (evil-multiedit-default-keybinds))
 
 (use-package hydra)
 
@@ -256,10 +262,14 @@
     "qq" '(kill-emacs :which-key "Quit Emacs")
     "t"  '(:ignore t :which-key "toggles")
     "tt" '(Counsel-load-theme :which-key "choose theme")
+    "h"  '(:ignore h :which-key "Describe")
+    "hv" '(counsel-describe-variable :which-key "variable")
+    "hf" '(counsel-describe-function :which-key "function")
     "ts" '(hydra-text-scale/body :which-key "scale text")))
 (general-evil-setup)
 
-(use-package vterm)
+(unless (string-equal system-type "windows-nt")
+  (use-package vterm))
 
 (use-package pdf-tools)
 
@@ -285,23 +295,44 @@
   :straight '(org :type git
 		  :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git")
   :config
-  (setq org-export-date-timestamp-format "%A, %B %e, %Y"))
+  (setq org-export-date-timestamp-format "%A, %B %e, %Y")
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
 
-(use-package org-contrib
-  :straight t)
+(use-package org-contrib)
 
-(use-package auctex
-  :straight t)
+(use-package ivy-bibtex)
+
+(use-package org-ref
+  :config
+  (setq org-latex-prefer-user-labels t)
+  (setq org-ref-default-ref-type "autoref"))
+
+(use-package org-ref-ivy
+  :straight org-ref
+  :after (org org-ref ivy ivy-bibtex)
+  :init (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+	      org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+	      org-ref-insert-label-function 'org-ref-insert-label-link
+	      org-ref-insert-ref-function 'org-ref-insert-ref-link
+	      org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body))))
+(use-package org-ref-arxiv :straight org-ref)
+(use-package org-ref-scopus :straight org-ref)
+(use-package org-ref-wos :straight org-ref)
+
+(define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
+
+(use-package auctex)
+(use-package cdlatex :after org :hook (org-mode . org-cdlatex-mode))
 
 (use-package org-superstar :after org :hook (org-mode . org-superstar-mode))
 
 ;; Python things
 
-(use-package conda
-  :config
-  (custom-set-variables '(conda-anaconda-home "~/mambaforge/"))
-  (setq conda-env-home-directory (expand-file-name "~/mambaforge/")))
-(conda-env-activate "base")
+;;(use-package conda
+;;  :config
+;; (custom-set-variables '(conda-anaconda-home "~/mambaforge/"))
+;;  (setq conda-env-home-directory (expand-file-name "~/mambaforge/")))
+;;(conda-env-activate "base")
 
 (use-package jupyter)
 
@@ -318,7 +349,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(conda-anaconda-home "~/mambaforge/")
+ '(org-agenda-files
+   '("~/Dropbox/URochester/Fall_2021/PHYS_415_Electromagnetic_Theory/final_project/surface_plasmons.org"))
  '(package-selected-packages
    '(org pdf-tools vterm counsel-projectile projectile ligature command-log-mode quelpa-use-package quelpa general hydra evil-nerd-commenter evil-surround evil-collection evil helpful which-key rainbow-delimiters doom-themes doom-modeline))
  '(warning-suppress-types '((use-package) (comp))))
