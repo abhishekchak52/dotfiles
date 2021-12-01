@@ -295,6 +295,7 @@
   :straight '(org :type git
 		  :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git")
   :config
+  (setq org-confirm-babel-evaluate nil)
   (setq org-export-date-timestamp-format "%A, %B %e, %Y")
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
 
