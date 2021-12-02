@@ -1,6 +1,25 @@
+;; Straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+;; (use-package scimax :straight '(scimax :type git :host github :repo "jkitchin/scimax"))
+;; (add-to-list 'load-path "~/.emacs.d/straight/repos/scimax/")
+;; (use-package scimax-jupyter :straight nil :load-path "~/.emacs.d/straight/repos/scimax/")
+
 (setq inhibit-startup-message t)
-
-
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
@@ -37,22 +56,10 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; Straight.el
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-global-mode t))
 
 (column-number-mode)
 
@@ -163,7 +170,7 @@
   (doom-themes-org-config))
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook ((prog-mode org-mode) . rainbow-delimiters-mode))
 
 (use-package which-key
   :init (which-key-mode)
@@ -334,6 +341,10 @@
 ;; (custom-set-variables '(conda-anaconda-home "~/mambaforge/"))
 ;;  (setq conda-env-home-directory (expand-file-name "~/mambaforge/")))
 ;;(conda-env-activate "base")
+(use-package company-jedi
+  :hook (org-mode . jedi:setup)
+  :config
+  (setq jedi:complete-on-dot t))
 
 (use-package jupyter)
 
@@ -343,6 +354,8 @@
    (julia . t)
    (python . t)
    (jupyter . t)))
+
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 
 ;; HERE BE DRAGONS
 (custom-set-variables
