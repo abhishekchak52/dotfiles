@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jupyter-python-plot
+# key: <jpp
+# --
+#+BEGIN_SRC jupyter-python :session py :async yes :results drawer
+$0
+#+END_SRC

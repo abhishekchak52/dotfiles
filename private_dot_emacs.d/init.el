@@ -15,9 +15,8 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-;; (use-package scimax :straight '(scimax :type git :host github :repo "jkitchin/scimax"))
+(use-package scimax :straight '(scimax :type git :host github :repo "jkitchin/scimax" :build nil))
 ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/scimax/")
-;; (use-package scimax-jupyter :straight nil :load-path "~/.emacs.d/straight/repos/scimax/")
 
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)        ; Disable visible scrollbar
