@@ -1,5 +1,0 @@
- -*- mode: snippet -*-
-# name: latex-header-usepackage
-# key: lhp
-# --
-#+latex_header: \usepackage{$0}

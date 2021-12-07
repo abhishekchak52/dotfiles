@@ -1,3 +1,0 @@
-{{ if (ne .chezmoi.os "linux") }}
-.zshrc # only manage .zshrc on Linux
-{{- end }}
