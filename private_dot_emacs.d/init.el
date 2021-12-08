@@ -1,4 +1,8 @@
 ;; Straight.el
+(setq initial-major-mode 'org-mode)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -15,8 +19,16 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-(use-package scimax :straight '(scimax :type git :host github :repo "jkitchin/scimax" :build nil))
-;; (add-to-list 'load-path "~/.emacs.d/straight/repos/scimax/")
+
+(use-package scimax
+:straight '(scimax :type git :host github :repo "jkitchin/scimax")
+ :init
+ (setq scimax-dir "~/.emacs.d/straight/build/scimax/"))
+(add-to-list 'load-path "~/.emacs.d/straight/build/scimax/")
+ ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/scimax/"))
+;; (require 'ox-manuscript)
+;;(load-file "~/.emacs.d/straight/repos/scimax/scimax-ob.el")
+;;(load-file "~/.emacs.d/straight/repos/scimax/scimax-jupyter.el")
 
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)        ; Disable visible scrollbar
@@ -229,6 +241,7 @@
   (evil-multiedit-default-keybinds))
 
 (use-package hydra)
+(use-package major-mode-hydra)
 
 (defhydra hydra-text-scale (:timeout 4)
   "scale text"
@@ -303,7 +316,13 @@
   :config
   (setq org-confirm-babel-evaluate nil)
   (setq org-export-date-timestamp-format "%A, %B %e, %Y")
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+  (setq org-display-inline-images t)
+  (setq org-redisplay-inline-images t)
+  (setq org-startup-with-inline-images "inlineimages")
+  (setq org-hide-emphasis-markers t)
+  (setq org-confirm-elisp-link-function nil)
+  (setq org-link-frame-setup '((file . find-file))))
 
 (use-package org-contrib)
 
