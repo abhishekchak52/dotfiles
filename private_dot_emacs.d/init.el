@@ -2,6 +2,7 @@
 (setq initial-major-mode 'org-mode)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq-default python-indent-levels 4)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -18,18 +19,6 @@
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
-
-
-(use-package scimax
-:straight '(scimax :type git :host github :repo "jkitchin/scimax")
- :init
- (setq scimax-dir "~/.emacs.d/straight/build/scimax/"))
-(add-to-list 'load-path "~/.emacs.d/straight/build/scimax/")
- ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/scimax/"))
-;; (require 'ox-manuscript)
-;;(load-file "~/.emacs.d/straight/repos/scimax/scimax-ob.el")
-;;(load-file "~/.emacs.d/straight/repos/scimax/scimax-jupyter.el")
-
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
@@ -37,13 +26,9 @@
 (set-fringe-mode 10)        ; Give some breathing room
 (global-visual-line-mode t) 
 (menu-bar-mode -1)            ; Disable the menu bar
-
-;; Set up the visible bell
-(setq visible-bell t)
-
+(setq visible-bell t)   ;; Set up the visible bell
 (setq efs/default-font-size 120)
 (setq efs/default-variable-font-size 100)
-
 (global-set-key (kbd "C-c C-b") 'eval-buffer)
 
 (defun efs/set-font-faces ()
@@ -241,7 +226,6 @@
   (evil-multiedit-default-keybinds))
 
 (use-package hydra)
-(use-package major-mode-hydra)
 
 (defhydra hydra-text-scale (:timeout 4)
   "scale text"
