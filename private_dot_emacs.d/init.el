@@ -307,6 +307,17 @@
   (setq org-hide-emphasis-markers t)
   (setq org-confirm-elisp-link-function nil)
   (setq org-link-frame-setup '((file . find-file))))
+;; ** <<APS journals>>
+(add-to-list 'org-latex-classes '("revtex4-2"
+				  "\\documentclass{revtex4-2}
+ [NO-DEFAULT-PACKAGES]
+ [PACKAGES]
+ [EXTRA]"
+				  ("\\section{%s}" . "\\section*{%s}")
+				  ("\\subsection{%s}" . "\\subsection*{%s}")
+				  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+				  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+				  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (use-package org-contrib)
 
@@ -316,6 +327,7 @@
   :config
   (setq org-latex-prefer-user-labels t)
   (setq org-ref-default-ref-type "autoref"))
+
 
 (use-package org-ref-ivy
   :straight org-ref
